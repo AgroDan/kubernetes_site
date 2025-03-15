@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: halford.einados.com
+spec:
+  secretName: halford.einados.com
+  dnsNames:
+    - halford.einados.com
+    - einados.com
+    - www.einados.com
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer

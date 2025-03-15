@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: einados-redirect
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: "default-redirect-to-new-domain@kubernetescrd"
+spec:
+  ingressClassName: "traefik"
+  rules:
+    - host: einados.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: placeholder-service
+                port:
+                  number: 80

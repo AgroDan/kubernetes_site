@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hhc2021-deployment
+  labels:
+    app: hhc2021-site
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hhc2021-site
+  template:
+    metadata:
+      labels:
+        app: hhc2021-site
+    spec:
+      containers:
+      - name: hhc2021-site
+        image: agr0dan/hhc2021:20250314
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

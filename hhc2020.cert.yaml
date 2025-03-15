@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hhc2020.agrohacksstuff.io
+spec:
+  secretName: hhc2020.agrohacksstuff.io
+  dnsNames:
+    - hhc2020.agrohacksstuff.io
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: agrohacksstuff.io
+spec:
+  secretName: agrohacksstuff.io
+  dnsNames:
+    - agrohacksstuff.io
+    - www.agrohacksstuff.io
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer

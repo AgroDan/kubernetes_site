@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: uac.agrohacksstuff.io
+spec:
+  secretName: uac.agrohacksstuff.io
+  dnsNames:
+    - uac.agrohacksstuff.io
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
