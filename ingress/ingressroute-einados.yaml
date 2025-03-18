@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: redirect-route
+  namespace: default
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`einados.com`) || Host(`www.einados.com`)
+      kind: Rule
+      middlewares:
+        - name: redirect-oldsite
+      services:
+        - name: main-site-service
+          port: 80

@@ -1,9 +1,10 @@
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: redirect-to-new-domain
+  name: redirect-oldsite
+  namespace: default
 spec:
   redirectRegex:
-    regex: ^https?://(?!halford\.einados\.com)(.*\.)?einados\.com/(.*)
+    regex: ^https?://(www.)?einados\.com/(.*)
     replacement: https://agrohacksstuff.io/$2
     permanent: true

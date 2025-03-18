@@ -17,3 +17,13 @@ spec:
                 name: placeholder-service
                 port:
                   number: 80
+    - host: www.einados.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: 
+                name: placeholder-service
+                port:
+                  number: 80
