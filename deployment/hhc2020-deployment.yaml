@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hhc2022-deployment
+  name: hhc2020-deployment
   labels:
-    app: hhc2022-site
+    app: hhc2020-site
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: hhc2022-site
+      app: hhc2020-site
   template:
     metadata:
       labels:
-        app: hhc2022-site
+        app: hhc2020-site
     spec:
       containers:
-      - name: hhc2022-site
-        image: agr0dan/hhc2021:20250314
+      - name: hhc2020-site
+        image: agr0dan/hhc2020:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: halford-deployment
+  name: hhc2022-deployment
   labels:
-    app: halford-site
+    app: hhc2022-site
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: halford-site
+      app: hhc2022-site
   template:
     metadata:
       labels:
-        app: halford-site
+        app: hhc2022-site
     spec:
       containers:
-      - name: halford-site
-        image: agr0dan/halford.einados.com:03152502
+      - name: hhc2022-site
+        image: agr0dan/hhc2021:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

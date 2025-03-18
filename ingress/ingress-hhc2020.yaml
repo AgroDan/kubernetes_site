@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hhc2020-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "default-https-redirect@kubernetescrd"
+spec:
+  ingressClassName: "traefik"
+  tls:
+  - hosts:
+    - hhc2020.agrohacksstuff.io
+    secretName: hhc2020.agrohacksstuff.io
+  rules:
+  - host: hhc2020.agrohacksstuff.io
+    http:
+      paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: hhc2020-service
+              port:
+                number: 80
+

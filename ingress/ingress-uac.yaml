@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uaclookup-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "default-https-redirect@kubernetescrd"
+spec:
+  ingressClassName: "traefik"
+  tls:
+  - hosts:
+    - uac.agrohacksstuff.io
+    secretName: uac.agrohacksstuff.io
+  rules:
+  - host: uac.agrohacksstuff.io
+    http:
+      paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: uaclookup-service
+              port:
+                number: 80
+

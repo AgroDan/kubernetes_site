@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: halford-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "default-https-redirect@kubernetescrd"
+spec:
+  ingressClassName: "traefik"
+  tls:
+  - hosts:
+    - halford.einados.com
+    - einados.com
+    - www.einados.com
+    secretName: halford.einados.com
+  rules:
+  - host: halford.einados.com
+    http:
+      paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: halford-service
+              port:
+                number: 80

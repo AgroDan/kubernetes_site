@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: main-site
-        image: agr0dan/agrohacksstuff.io:20250314
+        image: agr0dan/agrohacksstuff.io:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
