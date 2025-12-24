@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: hhc2021-site
-        image: agr0dan/hhc2021:latest
+        image: agr0dan/hhc2021:20250314
         imagePullPolicy: Always
         ports:
         - containerPort: 80
