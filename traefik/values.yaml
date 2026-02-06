@@ -1,0 +1,30 @@
+api:
+  insecure: false
+  dashboard: false
+
+ports:
+  web:
+    exposedPort: 80
+    port: 8000
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    exposedPort: 443
+    port: 8443
+    http:
+      tls:
+        enabled: true
+
+providers:
+  kubernetesIngress:
+    publishedService:
+      enabled: true
+
+securityContext:
+  capabilities:
+    add:
+      - NET_BIND_SERVICE
