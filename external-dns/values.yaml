@@ -1,0 +1,34 @@
+# Upstream chart: https://kubernetes-sigs.github.io/external-dns/
+# Image: registry.k8s.io/external-dns/external-dns (chart default)
+#
+# The Linode API token lives in the "linode-api-token" Secret, which is not
+# managed by Helm or stored in this repo.
+
+provider:
+  name: linode
+
+env:
+  - name: LINODE_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: linode-api-token
+        key: token
+
+sources:
+  - service
+  - ingress
+
+# Only create/update records, never delete them.
+policy: upsert-only
+registry: txt
+# txtOwnerId is left unset so it stays "default", matching the records created
+# by the previous (Bitnami) install.
+
+interval: 1m
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    memory: 128Mi
