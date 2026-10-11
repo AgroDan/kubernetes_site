@@ -6,6 +6,11 @@ ports:
   web:
     exposedPort: 80
     port: 8000
+    # Linode NodeBalancers proxy TCP, so the real client IP only arrives via
+    # PROXY protocol. Trust it from the NodeBalancer's private range only.
+    proxyProtocol:
+      trustedIPs:
+        - 192.168.255.0/24
     http:
       redirections:
         entryPoint:
@@ -15,6 +20,11 @@ ports:
   websecure:
     exposedPort: 443
     port: 8443
+    # Linode NodeBalancers proxy TCP, so the real client IP only arrives via
+    # PROXY protocol. Trust it from the NodeBalancer's private range only.
+    proxyProtocol:
+      trustedIPs:
+        - 192.168.255.0/24
     http:
       tls:
         enabled: true
@@ -52,6 +62,9 @@ accessLog:
 # Preserve the real client IP. With the default "Cluster" policy, kube-proxy
 # SNATs traffic, so every request looks like it came from a node IP.
 service:
+  annotations:
+    # Have the NodeBalancer send PROXY protocol headers (see ports.*.proxyProtocol).
+    service.beta.kubernetes.io/linode-loadbalancer-default-proxy-protocol: v2
   spec:
     externalTrafficPolicy: Local
 
