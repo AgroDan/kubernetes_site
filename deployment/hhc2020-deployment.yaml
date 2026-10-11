@@ -18,5 +18,11 @@ spec:
       - name: hhc2020-site
         image: agr0dan/hhc2020:20250314
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
         ports:
         - containerPort: 80

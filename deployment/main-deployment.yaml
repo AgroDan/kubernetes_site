@@ -18,6 +18,12 @@ spec:
       - name: main-site
         image: agr0dan/agrohacksstuff.io:latest
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
         ports:
         - containerPort: 80
           name: mainsite-web

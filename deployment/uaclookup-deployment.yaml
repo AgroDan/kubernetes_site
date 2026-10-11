@@ -18,5 +18,11 @@ spec:
       - name: uaclookup-site
         image: agr0dan/uac_lookup:latest
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
         ports:
         - containerPort: 8000

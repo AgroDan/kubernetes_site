@@ -28,3 +28,64 @@ securityContext:
   capabilities:
     add:
       - NET_BIND_SERVICE
+
+# Structured logs: one JSON line per request (client IP, host, path, status,
+# duration, backend, user agent, referer). Read with `kubectl logs -n traefik`.
+log:
+  format: json
+  level: INFO
+
+accessLog:
+  enabled: true
+  format: json
+  fields:
+    defaultMode: keep
+    headers:
+      defaultMode: drop
+      names:
+        User-Agent: keep
+        Referer: keep
+        X-Forwarded-For: keep
+        Authorization: redact
+        Cookie: redact
+
+# Preserve the real client IP. With the default "Cluster" policy, kube-proxy
+# SNATs traffic, so every request looks like it came from a node IP.
+service:
+  spec:
+    externalTrafficPolicy: Local
+
+# Two replicas, one per node, so a single pod/node failure doesn't take every
+# site down. Also required for externalTrafficPolicy: Local to serve from both
+# nodes.
+deployment:
+  replicas: 2
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: traefik
+            app.kubernetes.io/instance: traefik-traefik
+        topologyKey: kubernetes.io/hostname
+
+# With only 2 nodes and hard anti-affinity there's no room to surge a third
+# pod, so roll one at a time instead (the other keeps serving).
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 0
+    maxUnavailable: 1
+
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+
+# Reserve memory/CPU so Traefik isn't starved when the node runs low.
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
