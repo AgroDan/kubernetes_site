@@ -14,6 +14,14 @@ spec:
       labels:
         app: hhc2022-site
     spec:
+      # Spread replicas across nodes so one node failure doesn't take the site down.
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: hhc2022-site
       containers:
       - name: hhc2022-site
         image: agr0dan/hhc2022:20250314

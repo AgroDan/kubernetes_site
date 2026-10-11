@@ -14,6 +14,14 @@ spec:
       labels:
         app: main-site
     spec:
+      # Spread replicas across nodes so one node failure doesn't take the site down.
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: main-site
       containers:
       - name: main-site
         image: agr0dan/agrohacksstuff.io:latest
