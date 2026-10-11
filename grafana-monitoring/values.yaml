@@ -1,0 +1,65 @@
+# Grafana Cloud log shipping via Grafana's k8s-monitoring chart (Alloy).
+# Chart: grafana/k8s-monitoring
+#
+# Credentials live in the "grafana-cloud-logs" Secret (keys: username, password),
+# which is created by hand and not stored in this repo.
+
+cluster:
+  name: kubernetes-prod
+
+destinations:
+  grafana-cloud-logs:
+    type: loki
+    url: https://logs-prod-036.grafana.net/loki/api/v1/push
+    auth:
+      type: basic
+    secret:
+      create: false
+      name: grafana-cloud-logs
+      namespace: monitoring
+
+# Logs from every pod (including Traefik's access logs).
+podLogsViaLoki:
+  enabled: true
+  collector: alloy-logs
+
+# Kubernetes events (OOM kills, failed probes, restarts, scheduling failures).
+clusterEvents:
+  enabled: true
+  collector: alloy-singleton
+
+# Logs only, so no metrics destination for self-reporting.
+selfReporting:
+  enabled: false
+
+# Alloy instances. Resources are kept small because the nodes are 2 GB.
+collectors:
+  # One per node, tailing pod log files from the host.
+  alloy-logs:
+    presets: [daemonset, filesystem-log-reader]
+    alloy:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+  # Single replica for cluster-wide events.
+  alloy-singleton:
+    presets: [singleton]
+    alloy:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 48Mi
+        limits:
+          memory: 192Mi
+
+# The operator that manages the Alloy instances above.
+alloy-operator:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
